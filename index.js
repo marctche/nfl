@@ -1,25 +1,31 @@
-// Importing the library Express
-const express = require('express');
+const express = require('express'); // Importing the library Express
+const players = require('./routes/player.js') // Importing the player.js file
+const importAllPlayers = require('./services/importAllPlayers.js')
+const app = express(); // Create an express app
+require('dotenv').config({path:'./database_info.env'});
 
-// Importing the player.js file
-const players = require('./routes/player.js')
+app.use(express.json()); // Middleware to parse incoming JSON data
 
-// Create an express app
-const app = express();
-// Middleware to parse incoming JSON data
-app.use(express.json());
-// Middleware to parse incoming player endpoint
-app.use('/players', players);
+app.use('/players', players); // Middleware to parse incoming player endpoint
 
 // Sample endpoint GET
 app.get('/players', (req, res) => {
     res.json({ message: "Welcome to my NFL app" });
 });
 
-// Define the port the app will listen on
-const PORT = 3000;
+app.get('/import', async (req, res) => {
+    try {
+        await importAllPlayers();
+        res.json({ message: "Players import completed successfully." });
+    } catch (error) { // handles error
+        console.error("Error during player import:", error.message);
+        res.status(500).json({ message: "Error importing players." });
+    }
+});
 
-// Start the server and listen for incoming requests
-app.listen(PORT, () => {
+// Define the port the app will listen on
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => { // Start the server and listen for incoming requests
     console.log(`Server is running on http://localhost:${PORT}`);
 });
