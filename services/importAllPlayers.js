@@ -11,7 +11,7 @@ const importAllPlayers = async () => {
 
         // Step 2: Fetch players for each team
         for (const team of teams) {
-            const teamID = team.id; // Adjust based on the API's team object structure
+            const teamID = team.id; // Adjust based on the API team object structure
             console.log(`Fetching players for team: ${team.name} (ID: ${teamID})`);
 
             const players = await fetchAllTeamPlayers(teamID);
