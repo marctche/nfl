@@ -17,6 +17,43 @@ const axiosConfig = {
 };
 
 
+
+//func to insert player data into the database
+const pool = require('../db');
+
+const insertPlayer = async (playerDetails) => {
+    const {
+        id, uid, guid, type, firstName, lastName, fullName, displayName, shortName,
+        weight, displayWeight, height, displayHeight, age, dateOfBirth, debutYear,
+        birthPlace, alternateIds
+    } = playerDetails;
+
+    const query = `
+
+        INSERT INTO players (external_id, uid, guid, type, first_name, last_name, full_name, display_name, short_name, weight, display_weight, height, display_height, age, date_of_birth, debut_year, birth_place, alternate_ids) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18) 
+        ON CONFLICT (external_id) DO NOTHING;`
+
+    ;
+
+    const values = [
+        id, uid, guid, type, firstName, lastName, fullName, displayName, shortName,
+        weight, displayWeight, height, displayHeight, age, dateOfBirth, debutYear,
+        birthPlace ? JSON.stringify(birthPlace) : null, // Convert to JSON
+        alternateIds ? JSON.stringify(alternateIds) : null // Convert to JSON
+    ];
+
+    try {
+        await pool.query(query, values);
+        console.log(`Player ${fullName} inserted successfully.`);
+    } catch (err) {
+        console.error('Error inserting player:', err.message);
+    }
+};
+
+module.exports = { insertPlayer };
+
+
 // GET ALL PLAYERS
 
 router.get('/team/:id', async (req, res) => {
