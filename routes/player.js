@@ -30,7 +30,7 @@ router.get('/team/:id', async (req, res) => {
         headers: {
             'x-rapidapi-key': API_KEY,
             'x-rapidapi-host': API_HOST
-        }
+        }//
     };
 
     try {
