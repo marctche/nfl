@@ -13,9 +13,9 @@ const insertTeam = async (team) => {
         team.id,
         team.name,
         team.abbreviation,
-        team.location,
-        team.color,
-        team.alternateColor
+        team.location || 'Unknown',
+        team.color || null,
+        team.alternateColor || null
     ];
 
     try {

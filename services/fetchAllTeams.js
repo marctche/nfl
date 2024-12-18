@@ -13,14 +13,20 @@ const fetchAllTeams = async () => {
 
     try {
         const response = await axios.request(options);
-        const teams = response.data.map(item => item.team);
+        const teams = response.data.map(item => ({
+            id: item.team.id,
+            name: item.team.name,
+            location: item.team.location || 'unknown',
+            abbreviation: item.team.abbreviation,
+            color: item.team.color || null,
+            alternateColor: item.team.alternateColor || null
+        }));
         return teams;
     } catch (error) {
         console.error('Error fetching teams:', error.message);
         throw error;
     }
 };
-
 module.exports = fetchAllTeams;
 
 

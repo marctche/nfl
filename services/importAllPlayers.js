@@ -42,10 +42,10 @@ const importAllPlayers = async () => {
                     experience: player.experience || null,
                     active: player.active || false,
                     status: player.status || null,
-                    team_id: player.team_id || null
+                    team_id: teamID
                 };
 
-                console.log("Inserting player:", playerDetails); // Log mapped player details
+                console.log("Inserting player:", playerDetails.team_id); // Log mapped player details
                 await insertPlayer(playerDetails);
                 totalPlayersInserted++;
             }

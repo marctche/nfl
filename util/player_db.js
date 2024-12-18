@@ -27,8 +27,7 @@ const insertPlayer = async (playerDetails) => {
         birthPlace ? JSON.stringify(birthPlace) : null, // Convert to JSON
         alternateIds ? JSON.stringify(alternateIds) : null, // Convert to JSON
         slug, jersey, linked, experience ? experience.years : null, active,
-        status ? JSON.stringify(status) : null,// Convert status to JSON
-        team_id
+        status ? JSON.stringify(status) : null, team_id
     ];
 
     try {
