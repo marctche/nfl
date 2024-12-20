@@ -4,8 +4,25 @@ const pool = require('../db');
 
 // Route 1: GET all teams
 router.get('/', async (req, res) => {
+    let query = 'SELECT * FROM teams';
+    const params = [];
+
+    // Build query with optional filtering
+    if (location || active) {
+        const conditions = [];
+        if (location) {
+            params.push(`%${location}%`);
+            conditions.push(`location ILIKE $${params.length}`);
+        }
+        if (active) {
+            params.push(active);
+            conditions.push(`is_active = $${params.length}`);
+        }
+        query += ' WHERE ' + conditions.join(' AND ');
+    }
+
     try {
-        const result = await pool.query('SELECT * FROM teams');
+        const result = await pool.query(query, params);
         res.json(result.rows);
     } catch (error) {
         console.error('Error fetching teams:', error.message);
